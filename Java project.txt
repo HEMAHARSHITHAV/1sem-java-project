@@ -1,0 +1,66 @@
+import java.util.*;
+
+class CreditCard {
+    private String customerName;
+    private double balance;
+    private double creditLimit;
+    private double dueAmount;
+
+    CreditCard(String name, double limit) {
+        this.customerName = name;
+        this.creditLimit = limit;
+        this.balance = 0;
+        this.dueAmount = 0;
+    }
+
+    void addTransaction(double amount) {
+        if (balance + amount <= creditLimit) {
+            balance += amount;
+            System.out.println("Transaction added: " + amount);
+        } else {
+            System.out.println("Credit limit exceeded!");
+        }
+    }
+
+    void generateBill() {
+        dueAmount = balance + (balance * 0.02); // 2% interest
+        System.out.println("\nBill Generated for " + customerName);
+        System.out.println("Outstanding Balance: " + balance);
+        System.out.println("Total Due (with interest): " + dueAmount);
+    }
+
+    void sendReminder() {
+        if (dueAmount > 0) {
+            System.out.println("Reminder: Dear " + customerName + ", your due amount is " + dueAmount);
+        } else {
+            System.out.println("Reminder: Dear " + customerName + ", you have no dues. Thank you!");
+        }
+    }
+
+    void makePayment(double amount) {
+        if (amount > 0 && amount <= dueAmount) {
+            dueAmount -= amount;
+            balance -= amount;
+            if (balance < 0) balance = 0;
+            System.out.println("Payment successful: " + amount);
+        } else {
+            System.out.println("Invalid payment amount!");
+        }
+    }
+}
+
+public class Main {   // ✅ Matches file name Main.java
+    public static void main(String[] args) {
+        CreditCard card = new CreditCard("John Doe", 50000);
+
+        card.addTransaction(10000);
+        card.addTransaction(5000);
+
+        card.generateBill();
+        card.sendReminder();
+
+        card.makePayment(8000);
+
+        card.sendReminder();
+    }
+}
